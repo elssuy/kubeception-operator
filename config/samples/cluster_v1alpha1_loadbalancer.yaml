@@ -1,0 +1,12 @@
+apiVersion: cluster.kubeception.ulfo.fr/v1alpha1
+kind: Loadbalancer
+metadata:
+  labels:
+    app.kubernetes.io/name: loadbalancer
+    app.kubernetes.io/instance: loadbalancer-sample
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubeception-operator
+  name: loadbalancer-sample
+spec:
+  # TODO(user): Add fields here

@@ -1,0 +1,12 @@
+apiVersion: cluster.kubeception.ulfo.fr/v1alpha1
+kind: KubeScheduler
+metadata:
+  labels:
+    app.kubernetes.io/name: kubescheduler
+    app.kubernetes.io/instance: kubescheduler-sample
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubeception-operator
+  name: kubescheduler-sample
+spec:
+  # TODO(user): Add fields here

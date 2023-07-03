@@ -1,0 +1,41 @@
+# This kustomization.yaml is not intended to be run by itself,
+# since it depends on service name and namespace that are out of this kustomize package.
+# It should be run by config/default
+resources:
+- bases/cluster.kubeception.ulfo.fr_controlplanes.yaml
+- bases/cluster.kubeception.ulfo.fr_pkis.yaml
+- bases/cluster.kubeception.ulfo.fr_kubecontrollermanagers.yaml
+- bases/cluster.kubeception.ulfo.fr_kubeapiservers.yaml
+- bases/cluster.kubeception.ulfo.fr_kubeschedulers.yaml
+- bases/cluster.kubeception.ulfo.fr_clusternodes.yaml
+- bases/cluster.kubeception.ulfo.fr_loadbalancers.yaml
+#+kubebuilder:scaffold:crdkustomizeresource
+
+patchesStrategicMerge:
+# [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
+# patches here are for enabling the conversion webhook for each CRD
+#- patches/webhook_in_controlplanes.yaml
+#- patches/webhook_in_apiservers.yaml
+#- patches/webhook_in_pkis.yaml
+#- patches/webhook_in_kubecontrollermanagers.yaml
+#- patches/webhook_in_kubeapiservers.yaml
+#- patches/webhook_in_kubeschedulers.yaml
+#- patches/webhook_in_clusternodes.yaml
+#- patches/webhook_in_loadbalancers.yaml
+#+kubebuilder:scaffold:crdkustomizewebhookpatch
+
+# [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
+# patches here are for enabling the CA injection for each CRD
+#- patches/cainjection_in_controlplanes.yaml
+#- patches/cainjection_in_apiservers.yaml
+#- patches/cainjection_in_pkis.yaml
+#- patches/cainjection_in_kubecontrollermanagers.yaml
+#- patches/cainjection_in_kubeapiservers.yaml
+#- patches/cainjection_in_kubeschedulers.yaml
+#- patches/cainjection_in_clusternodes.yaml
+#- patches/cainjection_in_loadbalancers.yaml
+#+kubebuilder:scaffold:crdkustomizecainjectionpatch
+
+# the following config is for teaching kustomize how to do kustomization for CRDs.
+configurations:
+- kustomizeconfig.yaml

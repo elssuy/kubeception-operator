@@ -1,0 +1,27 @@
+# permissions for end users to view kubeschedulers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: kubescheduler-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: kubeception-operator
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: kubescheduler-viewer-role
+rules:
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeschedulers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeschedulers/status
+  verbs:
+  - get

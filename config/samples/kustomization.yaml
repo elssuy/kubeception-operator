@@ -1,0 +1,10 @@
+## Append samples of your project ##
+resources:
+- cluster_v1alpha1_controlplane.yaml
+- cluster_v1alpha1_apiserver.yaml
+- cluster_v1alpha1_pki.yaml
+- cluster_v1alpha1_kubecontrollermanager.yaml
+- cluster_v1alpha1_kubeapiserver.yaml
+- cluster_v1alpha1_kubescheduler.yaml
+- cluster_v1alpha1_loadbalancer.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

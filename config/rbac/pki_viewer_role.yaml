@@ -1,0 +1,27 @@
+# permissions for end users to view pkis.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: pki-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: kubeception-operator
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: pki-viewer-role
+rules:
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - pkis
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - pkis/status
+  verbs:
+  - get

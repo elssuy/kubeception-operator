@@ -1,0 +1,92 @@
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cluster
+---
+apiVersion: cluster.kubeception.ulfo.fr/v1alpha1
+kind: ControlPlane
+metadata:
+  namespace: demo
+  labels:
+    app.kubernetes.io/name: controlplane
+    app.kubernetes.io/instance: controlplane-sample
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubeception-operator
+  name: demo-control-plane
+spec:
+  version: v1.26.1
+  loadbalancer:
+    name: "kube-apiserver"
+    port: 6443
+    selectors:
+      cluster.custom: foo
+  pki:
+    name: pki
+    ca:
+      name: ca
+    admin:
+      name: admin
+    service-accounts:
+      name: service-accounts
+    konnectivity:
+      name: konnectivity
+    kube-apiserver:
+      name: kube-apiserver
+      IPAddresses:
+        - "127.0.0.1"
+        - "10.0.0.1"
+        - "10.32.0.1" # Kube-apiserver service ip
+      DNSNames:
+        - localhost
+        - kubernetes
+        - kubernetes.default
+        - kubernetes.default.svc
+        - kubernetes.default.cluster.local
+        - kube-apiserver
+    kube-controller-manager:
+      name: kube-controller-manager
+    kube-scheduler:
+      name: kube-scheduler
+
+  kube-apiserver:
+    version: v1.26.1
+    etcd-servers: etcd-client:2379
+    deployment:
+      name: kube-apiserver
+      replicas: 3
+      labels:
+        cluster.custom: foo
+    tls:
+      ca-secret-name: ca
+      kube-apiserver-secret-name: kube-apiserver
+      service-accounts-secret-name: service-accounts
+      konnectivity-secret-name: konnectivity
+    options:
+      service-cluster-ip-range: 10.32.0.0/24
+
+  kube-controller-manager:
+    deployment:
+      name: kube-controller-manager
+      replicas: 3
+      labels:
+        cluster.custom: foo
+    tls:
+      ca: ca
+      kube-controller-manager-tls: kube-controller-manager
+      service-accounts-tls: service-accounts
+    kube-apiserver-service:
+      name: kube-apiserver
+      port: 6443
+
+  kube-scheduler:
+    deployment:
+      name: kube-scheduler
+      replicas: 3
+      labels:
+        cluster.custom: foo
+    kube-apiserver-service:
+      name: kube-apiserver
+      port: 6443
+    kube-scheduler-tls: kube-scheduler

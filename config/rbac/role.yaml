@@ -1,0 +1,235 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cert-manager.io
+  resources:
+  - certificates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cert-manager.io
+  resources:
+  - issuers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - controlplanes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - controlplanes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - controlplanes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeapiservers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeapiservers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeapiservers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubecontrollermanagers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubecontrollermanagers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubecontrollermanagers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeschedulers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeschedulers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - kubeschedulers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - loadbalancers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - loadbalancers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - loadbalancers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - pkis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - pkis/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.kubeception.ulfo.fr
+  resources:
+  - pkis/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

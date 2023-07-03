@@ -1,0 +1,71 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: kubeschedulers.cluster.kubeception.ulfo.fr
+spec:
+  group: cluster.kubeception.ulfo.fr
+  names:
+    kind: KubeScheduler
+    listKind: KubeSchedulerList
+    plural: kubeschedulers
+    shortNames:
+    - ks
+    singular: kubescheduler
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: KubeScheduler is the Schema for the kubeschedulers API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KubeSchedulerSpec defines the desired state of KubeScheduler
+            properties:
+              deployment:
+                description: Deployment spec for kube-scheduler
+                properties:
+                  labels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  name:
+                    type: string
+                  replicas:
+                    format: int32
+                    type: integer
+                type: object
+              kube-apiserver-service:
+                properties:
+                  name:
+                    type: string
+                  port:
+                    type: integer
+                type: object
+              kube-scheduler-tls:
+                description: KubeScheduler tls secret name
+                type: string
+            type: object
+          status:
+            description: KubeSchedulerStatus defines the observed state of KubeScheduler
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

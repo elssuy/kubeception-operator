@@ -1,0 +1,222 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: controlplanes.cluster.kubeception.ulfo.fr
+spec:
+  group: cluster.kubeception.ulfo.fr
+  names:
+    kind: ControlPlane
+    listKind: ControlPlaneList
+    plural: controlplanes
+    shortNames:
+    - cp
+    singular: controlplane
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ControlPlane is the Schema for the controlplanes API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ControlPlaneSpec defines the desired state of ControlPlane
+            properties:
+              kube-apiserver:
+                description: KubeAPIServerSpec defines the desired state of KubeAPIServer
+                properties:
+                  deployment:
+                    properties:
+                      labels:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      name:
+                        type: string
+                      replicas:
+                        format: int32
+                        type: integer
+                    type: object
+                  etcd-servers:
+                    type: string
+                  options:
+                    properties:
+                      advertise-address:
+                        type: string
+                      service-cluster-ip-range:
+                        type: string
+                    type: object
+                  tls:
+                    properties:
+                      ca-secret-name:
+                        type: string
+                      konnectivity-secret-name:
+                        type: string
+                      kube-apiserver-secret-name:
+                        type: string
+                      service-accounts-secret-name:
+                        type: string
+                    type: object
+                  version:
+                    type: string
+                type: object
+              kube-controller-manager:
+                description: KubeControllerManagerSpec defines the desired state of
+                  KubeControllerManager
+                properties:
+                  deployment:
+                    description: Deployment configuration
+                    properties:
+                      labels:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      name:
+                        type: string
+                      replicas:
+                        format: int32
+                        type: integer
+                    type: object
+                  kube-apiserver-service:
+                    description: KubeAPIServer Service infos
+                    properties:
+                      name:
+                        type: string
+                      port:
+                        type: integer
+                    type: object
+                  tls:
+                    description: Service accounts TLS secret name
+                    properties:
+                      ca:
+                        type: string
+                      kube-controller-manager-tls:
+                        type: string
+                      service-accounts-tls:
+                        type: string
+                    type: object
+                type: object
+              kube-scheduler:
+                description: KubeSchedulerSpec defines the desired state of KubeScheduler
+                properties:
+                  deployment:
+                    description: Deployment spec for kube-scheduler
+                    properties:
+                      labels:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      name:
+                        type: string
+                      replicas:
+                        format: int32
+                        type: integer
+                    type: object
+                  kube-apiserver-service:
+                    properties:
+                      name:
+                        type: string
+                      port:
+                        type: integer
+                    type: object
+                  kube-scheduler-tls:
+                    description: KubeScheduler tls secret name
+                    type: string
+                type: object
+              loadbalancer:
+                description: LoadbalancerSpec defines the desired state of Loadbalancer
+                properties:
+                  name:
+                    description: Foo is an example field of Loadbalancer. Edit loadbalancer_types.go
+                      to remove/update
+                    type: string
+                  port:
+                    format: int32
+                    type: integer
+                  selectors:
+                    additionalProperties:
+                      type: string
+                    type: object
+                type: object
+              pki:
+                description: PkiSpec defines the desired state of Pki
+                properties:
+                  admin:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  ca:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  controlplane-ips:
+                    type: string
+                  konnectivity:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  kube-apiserver:
+                    properties:
+                      DNSNames:
+                        items:
+                          type: string
+                        type: array
+                      IPAddresses:
+                        items:
+                          type: string
+                        type: array
+                      name:
+                        type: string
+                    type: object
+                  kube-controller-manager:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  kube-scheduler:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                  name:
+                    type: string
+                  service-accounts:
+                    properties:
+                      name:
+                        type: string
+                    type: object
+                type: object
+              version:
+                description: Control Plane version
+                type: string
+            type: object
+          status:
+            description: ControlPlaneStatus defines the observed state of ControlPlane
+            properties:
+              status:
+                description: Current status of the Control Plane
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

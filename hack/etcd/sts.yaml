@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: etcd
+  name: etcd
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: etcd
+  serviceName: etcd
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - |
+          exec /usr/local/bin/etcd \
+          --name $HOSTNAME \
+          --initial-advertise-peer-urls http://$HOSTNAME:2380 \
+          --listen-peer-urls http://0.0.0.0:2380 \
+          --listen-client-urls http://0.0.0.0:2379 \
+          --advertise-client-urls http://$HOSTNAME:2379 \
+          --initial-cluster etcd-0=http://etcd-0.etcd:2380,etcd-1=http://etcd-1.etcd:2380,etcd-2=http://etcd-2.etcd:2380 \
+          --initial-cluster-state new
+        image: quay.io/coreos/etcd:latest
+        name: etcd
+        ports:
+        - containerPort: 2379
+          name: client
+          protocol: TCP
+        - containerPort: 2380
+          name: server
+          protocol: TCP

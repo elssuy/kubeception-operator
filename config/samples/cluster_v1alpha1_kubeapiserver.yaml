@@ -1,0 +1,12 @@
+apiVersion: cluster.kubeception.ulfo.fr/v1alpha1
+kind: KubeAPIServer
+metadata:
+  labels:
+    app.kubernetes.io/name: kubeapiserver
+    app.kubernetes.io/instance: kubeapiserver-sample
+    app.kubernetes.io/part-of: kubeception-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubeception-operator
+  name: kubeapiserver-sample
+spec:
+  # TODO(user): Add fields here
