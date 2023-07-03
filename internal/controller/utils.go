@@ -73,3 +73,12 @@ func labels(component, instance string, more map[string]string) map[string]strin
 
 	return l
 }
+
+func CoaleseString(args ...string) string {
+	for _, v := range args {
+		if len(v) > 0 {
+			return v
+		}
+	}
+	return ""
+}
