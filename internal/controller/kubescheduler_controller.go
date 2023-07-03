@@ -157,7 +157,7 @@ func (r *KubeSchedulerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 					Containers: []corev1.Container{
 						{
 							Name:  "kube-scheduler",
-							Image: "registry.k8s.io/kube-scheduler:v1.27.1",
+							Image: fmt.Sprintf("registry.k8s.io/kube-scheduler:%s", ks.Spec.Version),
 							Command: []string{
 								"/usr/local/bin/kube-scheduler",
 								"--config",

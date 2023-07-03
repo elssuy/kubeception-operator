@@ -34,6 +34,9 @@ type KubeControllerManagerSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
+	// Kube Controller Manager version
+	Version string `json:"version,omitempty"`
+
 	// Service accounts TLS secret name
 	TLS KubeControllerManagerTLS `json:"tls,omitempty"`
 

@@ -60,6 +60,9 @@ spec:
               kube-scheduler-tls:
                 description: KubeScheduler tls secret name
                 type: string
+              version:
+                description: Kube Scheduler version
+                type: string
             type: object
           status:
             description: KubeSchedulerStatus defines the observed state of KubeScheduler
