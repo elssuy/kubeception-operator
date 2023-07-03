@@ -110,6 +110,9 @@ spec:
                       service-accounts-tls:
                         type: string
                     type: object
+                  version:
+                    description: Kube Controller Manager version
+                    type: string
                 type: object
               kube-scheduler:
                 description: KubeSchedulerSpec defines the desired state of KubeScheduler
@@ -136,6 +139,9 @@ spec:
                     type: object
                   kube-scheduler-tls:
                     description: KubeScheduler tls secret name
+                    type: string
+                  version:
+                    description: Kube Scheduler version
                     type: string
                 type: object
               loadbalancer:

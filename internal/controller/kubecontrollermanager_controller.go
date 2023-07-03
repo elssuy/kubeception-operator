@@ -145,7 +145,7 @@ func (r *KubeControllerManagerReconciler) Reconcile(ctx context.Context, req ctr
 					Containers: []corev1.Container{
 						{
 							Name:  "kube-controller-manager",
-							Image: "registry.k8s.io/kube-controller-manager:v1.27.1",
+							Image: fmt.Sprintf("registry.k8s.io/kube-controller-manager:%s", kcm.Spec.Version),
 							Command: []string{
 								"/usr/local/bin/kube-controller-manager",
 								"--authentication-skip-lookup",

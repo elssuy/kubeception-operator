@@ -28,6 +28,9 @@ type KubeSchedulerSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
+	// Kube Scheduler version
+	Version string `json:"version,omitempty"`
+
 	KubeAPIServerService Service `json:"kube-apiserver-service,omitempty"`
 
 	// KubeScheduler tls secret name

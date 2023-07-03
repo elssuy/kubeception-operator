@@ -45,7 +45,6 @@ spec:
       name: kube-scheduler
 
   kube-apiserver:
-    version: v1.26.1
     etcd-servers: etcd-client:2379
     deployment:
       name: kube-apiserver

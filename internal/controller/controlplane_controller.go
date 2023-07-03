@@ -145,6 +145,7 @@ func (r *ControlPlaneReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		}
 
 		kas.Spec.Options.AdvertiseAddress = lb.Status.IP
+		kas.Spec.Version = CoaleseString(cp.Spec.KubeApiServer.Version, cp.Spec.Version)
 
 		return nil
 	})
@@ -166,6 +167,7 @@ func (r *ControlPlaneReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	result, err = controllerutil.CreateOrPatch(ctx, r.Client, kcm, func() error {
 		kcm.Spec = cp.Spec.KubeControllerManager
+		kcm.Spec.Version = CoaleseString(cp.Spec.KubeControllerManager.Version, cp.Spec.Version)
 		return nil
 	})
 	if err != nil {
@@ -186,6 +188,7 @@ func (r *ControlPlaneReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	result, err = controllerutil.CreateOrPatch(ctx, r.Client, ks, func() error {
 		ks.Spec = cp.Spec.KubeScheduler
+		ks.Spec.Version = CoaleseString(cp.Spec.KubeScheduler.Version, cp.Spec.Version)
 		return nil
 	})
 	if err != nil {
