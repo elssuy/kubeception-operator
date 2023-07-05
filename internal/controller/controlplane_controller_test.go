@@ -24,6 +24,8 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
+
 	clusterv1alpha1 "kubeception.ulfo.fr/api/v1alpha1"
 )
 
@@ -40,7 +42,7 @@ var _ = Describe("controlplane controller", Ordered, func() {
 		Expect(k8sClient.Create(ctx, ns)).Should(Succeed())
 	})
 
-	It("Create the control plane CRD", func() {
+	It("Keep version in sync", func() {
 		crd := &clusterv1alpha1.ControlPlane{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "client-a",
@@ -127,6 +129,63 @@ var _ = Describe("controlplane controller", Ordered, func() {
 			},
 		}
 		Expect(k8sClient.Create(ctx, crd)).Should(Succeed())
+
+		kas := &clusterv1alpha1.KubeAPIServer{}
+		kcm := &clusterv1alpha1.KubeControllerManager{}
+		ks := &clusterv1alpha1.KubeScheduler{}
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kas)
+			return err == nil && kas.Spec.Version == "v1.26.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kcm)
+			return err == nil && kcm.Spec.Version == "v1.26.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, ks)
+			return err == nil && ks.Spec.Version == "v1.26.1"
+		}, timeout, interval).Should(BeTrue())
+
+		By("Changing main version it keep in sync all components")
+		crd.Spec.Version = "v1.27.1"
+		Expect(k8sClient.Update(ctx, crd)).Should(Succeed())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kas)
+			return err == nil && kas.Spec.Version == "v1.27.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kcm)
+			return err == nil && kcm.Spec.Version == "v1.27.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, ks)
+			return err == nil && ks.Spec.Version == "v1.27.1"
+		}, timeout, interval).Should(BeTrue())
+
+		By("Updateing one component version it updates it")
+		crd.Spec.KubeApiServer.Version = "v1.25.1"
+		Expect(k8sClient.Update(ctx, crd)).Should(Succeed())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kas)
+			return err == nil && kas.Spec.Version == "v1.25.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Eventually(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, kcm)
+			return err == nil && kcm.Spec.Version == "v1.27.1"
+		}, timeout, interval).Should(BeTrue())
+
+		Consistently(func() bool {
+			err := k8sClient.Get(ctx, types.NamespacedName{Name: crd.Name, Namespace: crd.Namespace}, ks)
+			return err == nil && ks.Spec.Version == "v1.27.1"
+		}, timeout, interval).Should(BeTrue())
 
 	})
 

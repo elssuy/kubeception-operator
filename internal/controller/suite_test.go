@@ -20,10 +20,13 @@ import (
 	"context"
 	"path/filepath"
 	"testing"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -33,6 +36,7 @@ import (
 
 	ctrl "sigs.k8s.io/controller-runtime"
 
+	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	clusterv1alpha1 "kubeception.ulfo.fr/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
 )
@@ -46,6 +50,9 @@ var (
 	testEnv   *envtest.Environment
 	ctx       context.Context
 	cancel    context.CancelFunc
+
+	timeout  = 10 * time.Second
+	interval = 3 * time.Second
 )
 
 func TestAPIs(t *testing.T) {
@@ -71,8 +78,8 @@ var _ = BeforeSuite(func() {
 	Expect(err).NotTo(HaveOccurred())
 	Expect(cfg).NotTo(BeNil())
 
-	err = clusterv1alpha1.AddToScheme(scheme.Scheme)
-	Expect(err).NotTo(HaveOccurred())
+	Expect(clusterv1alpha1.AddToScheme(scheme.Scheme)).NotTo(HaveOccurred())
+	Expect(certmanagerv1.AddToScheme(scheme.Scheme)).NotTo(HaveOccurred())
 
 	//+kubebuilder:scaffold:scheme
 
@@ -81,51 +88,33 @@ var _ = BeforeSuite(func() {
 	Expect(k8sClient).NotTo(BeNil())
 
 	// Create all the controllers
-	k8sManager, err := ctrl.NewManager(cfg, ctrl.Options{
+	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		Scheme: scheme.Scheme,
 	})
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&ControlPlaneReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewControlPlaneReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&LoadbalancerReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewLoadbalancerReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&PkiReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewPkiReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&KubeAPIServerReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewKubeAPIServerReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&KubeControllerManagerReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewKubeControllerManagerReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
-	err = (&KubeSchedulerReconciler{
-		Client: k8sManager.GetClient(),
-		Scheme: k8sManager.GetScheme(),
-	}).SetupWithManager(k8sManager)
+	err = NewKubeSchedulerReconciler(mgr).SetupWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
 	// Run controller
 	go func() {
 		defer GinkgoRecover()
-		err = k8sManager.Start(ctx)
+		err = mgr.Start(ctx)
 		Expect(err).NotTo(HaveOccurred(), "failed to run manager")
 	}()
 
@@ -137,3 +126,13 @@ var _ = AfterSuite(func() {
 	err := testEnv.Stop()
 	Expect(err).NotTo(HaveOccurred())
 })
+
+func GenerateSecret(name, namespace string, data map[string]string) *corev1.Secret {
+	return &corev1.Secret{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: namespace,
+		},
+		StringData: data,
+	}
+}
