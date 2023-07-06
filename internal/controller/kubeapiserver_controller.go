@@ -268,6 +268,7 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--cluster-key=/etc/kubernetes/tls/tls.key",
 								"--mode=grpc",
 								"--server-port=0",
+								"--server-id=$(POD_UID)",
 								"--agent-port=8132",
 								"--admin-port=8133",
 								"--health-port=8134",
@@ -277,6 +278,14 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								strconv.FormatInt(int64(kas.Spec.Deployment.Replicas), 10),
 								"--kubeconfig=/etc/kubernetes/konnectivity/kubeconfig.yml",
 								"--authentication-audience=system:konnectivity-server",
+							},
+							Env: []corev1.EnvVar{
+								{
+									Name: "POD_UID",
+									ValueFrom: &corev1.EnvVarSource{
+										FieldRef: &corev1.ObjectFieldSelector{FieldPath: "metadata.uid"},
+									},
+								},
 							},
 							Ports: []corev1.ContainerPort{
 								{Name: "grpc", ContainerPort: 8132},
