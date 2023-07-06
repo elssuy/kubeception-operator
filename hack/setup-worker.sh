@@ -136,8 +136,6 @@ users:
 EOF
 
 
-rm -r /etc/systemd/system/kubelet.service.d/
-
 cat<<EOF >> /etc/systemd/system/kubelet.service
 [Unit]
 Description=Kubelet Service
