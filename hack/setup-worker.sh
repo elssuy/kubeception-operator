@@ -158,6 +158,3 @@ EOF
 systemctl daemon-reload
 
 echo "$CA" | base64 -d > /var/lib/kubelet/pki/ca.crt
-
-
-echo "/!\ Please drop kubernetes CA cert in /var/lib/kubelet/pki/ca.crt"
