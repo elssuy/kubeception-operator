@@ -27,7 +27,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
@@ -351,19 +350,4 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 			},
 		},
 	}
-}
-
-func (r *KubeAPIServerReconciler) CreateOrPatch(ctx context.Context, obj client.Object, owner metav1.Object, f controllerutil.MutateFn) error {
-	if err := ctrl.SetControllerReference(owner, obj, r.Scheme); err != nil {
-		r.log.Error(err, "failed to set controller reference on APIServer certificate", "name", obj.GetName(), "namespace", obj.GetNamespace())
-		return err
-	}
-
-	result, err := controllerutil.CreateOrPatch(ctx, r.Client, obj, f)
-	if err != nil {
-		r.log.Error(err, fmt.Sprintf("failed to create or patch %s", obj.GetObjectKind().GroupVersionKind().Kind), "name", obj.GetName(), "namespace", obj.GetNamespace())
-		return err
-	}
-	r.log.Info(fmt.Sprintf("%s/%s cert was %s", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), result))
-	return nil
 }
