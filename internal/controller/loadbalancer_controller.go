@@ -79,6 +79,14 @@ func (r *LoadbalancerReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	service := &corev1.Service{ObjectMeta: metav1.ObjectMeta{Name: lb.Spec.Name, Namespace: req.Namespace}}
 	err := r.CreateOrPatch(ctx, service, lb, func() error {
+		labels := map[string]string{
+			"app.kubernetes.io/name": "kube-apiserver",
+		}
+
+		for k, v := range lb.Spec.Selectors {
+			labels[k] = v
+		}
+
 		service.Spec = corev1.ServiceSpec{
 			Type: corev1.ServiceTypeLoadBalancer,
 			Ports: []corev1.ServicePort{
@@ -87,7 +95,7 @@ func (r *LoadbalancerReconciler) Reconcile(ctx context.Context, req ctrl.Request
 				{Name: "konnectivity-admin", Port: 8133, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8133)},
 				{Name: "konnectivity-health", Port: 8134, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8134)},
 			},
-			Selector: lb.Spec.Selectors,
+			Selector: labels,
 		}
 		return nil
 	})
