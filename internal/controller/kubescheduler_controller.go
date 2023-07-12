@@ -25,6 +25,7 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/component-base/config/v1alpha1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -184,6 +185,21 @@ func (r *KubeSchedulerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 								{Name: "kube-scheduler", MountPath: "/etc/ssl/certs"},
 								{Name: "kube-scheduler", MountPath: "/var/lib/kubernetes/tls/ks"},
 								{Name: "kubeconfig", MountPath: "/var/lib/kubernetes/auth"},
+							},
+							LivenessProbe: &corev1.Probe{
+								InitialDelaySeconds: 10,
+								TimeoutSeconds:      15,
+								FailureThreshold:    8,
+								PeriodSeconds:       10,
+								SuccessThreshold:    1,
+								ProbeHandler: corev1.ProbeHandler{
+									HTTPGet: &corev1.HTTPGetAction{
+										Host:   "127.0.0.1",
+										Port:   intstr.FromInt(10259),
+										Path:   "/healthz",
+										Scheme: corev1.URISchemeHTTPS,
+									},
+								},
 							},
 						},
 					},
