@@ -191,7 +191,7 @@ func (r *KubeControllerManagerReconciler) Reconcile(ctx context.Context, req ctr
 								"*,bootstrapsigner,tokencleaner",
 							},
 							Ports: []corev1.ContainerPort{
-								{Name: "https", ContainerPort: 6443},
+								{Name: "https", ContainerPort: 10257},
 							},
 							VolumeMounts: []corev1.VolumeMount{
 								{Name: "kube-controller-manager", MountPath: "/etc/ssl/certs"},
