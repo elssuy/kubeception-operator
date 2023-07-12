@@ -178,7 +178,7 @@ func (r *KubeSchedulerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 								"/var/lib/kubernetes/tls/ks/ca.crt",
 							},
 							Ports: []corev1.ContainerPort{
-								{Name: "https", ContainerPort: 6443},
+								{Name: "https", ContainerPort: 10259},
 							},
 							VolumeMounts: []corev1.VolumeMount{
 								{Name: "kube-scheduler", MountPath: "/etc/ssl/certs"},
