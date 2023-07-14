@@ -288,6 +288,20 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								{Name: "konnectivity-kubeconfig", MountPath: "/etc/kubernetes/konnectivity"},
 								{Name: "kube-apiserver", MountPath: "/etc/kubernetes/tls"},
 							},
+							LivenessProbe: &corev1.Probe{
+								InitialDelaySeconds: 10,
+								TimeoutSeconds:      15,
+								FailureThreshold:    8,
+								PeriodSeconds:       10,
+								SuccessThreshold:    1,
+								ProbeHandler: corev1.ProbeHandler{
+									HTTPGet: &corev1.HTTPGetAction{
+										Port:   intstr.FromInt(8134),
+										Path:   "/healthz",
+										Scheme: corev1.URISchemeHTTP,
+									},
+								},
+							},
 						},
 						{
 							Name:  "kube-apiserver",
