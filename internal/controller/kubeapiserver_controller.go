@@ -25,6 +25,7 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -343,6 +344,32 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								{Name: "kube-apiserver", MountPath: "/var/lib/kubernetes/tls/kube-apiserver"},
 								{Name: "konnectivity-socket", MountPath: "/etc/kubernetes/konnectivity-socket"},
 								{Name: "konnectivity-egress", MountPath: "/etc/kubernetes/konnectivity-egress"},
+							},
+							LivenessProbe: &corev1.Probe{
+								InitialDelaySeconds: 10,
+								TimeoutSeconds:      15,
+								FailureThreshold:    8,
+								PeriodSeconds:       10,
+								ProbeHandler: corev1.ProbeHandler{
+									HTTPGet: &corev1.HTTPGetAction{
+										Port:   intstr.FromInt(6443),
+										Path:   "/livez",
+										Scheme: corev1.URISchemeHTTPS,
+									},
+								},
+							},
+							ReadinessProbe: &corev1.Probe{
+								InitialDelaySeconds: 10,
+								TimeoutSeconds:      15,
+								FailureThreshold:    8,
+								PeriodSeconds:       10,
+								ProbeHandler: corev1.ProbeHandler{
+									HTTPGet: &corev1.HTTPGetAction{
+										Port:   intstr.FromInt(6443),
+										Path:   "/readyz",
+										Scheme: corev1.URISchemeHTTPS,
+									},
+								},
 							},
 						},
 					},
