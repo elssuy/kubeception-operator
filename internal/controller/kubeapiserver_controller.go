@@ -273,9 +273,6 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--cluster-key=/etc/kubernetes/tls/tls.key",
 								"--mode=grpc",
 								"--server-port=0",
-								"--agent-port=8132",
-								"--admin-port=8133",
-								"--health-port=8134",
 								"--agent-namespace=kube-system",
 								"--agent-service-account=konnectivity-agent",
 								"--server-count",
@@ -284,9 +281,9 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--authentication-audience=system:konnectivity-server",
 							},
 							Ports: []corev1.ContainerPort{
-								{Name: "grpc", ContainerPort: 8132},
-								{Name: "admin", ContainerPort: 8133},
-								{Name: "health", ContainerPort: 8134},
+								{Name: "grpc", ContainerPort: 8091},
+								{Name: "admin", ContainerPort: 8095},
+								{Name: "health", ContainerPort: 8092},
 							},
 							VolumeMounts: []corev1.VolumeMount{
 								{Name: "konnectivity-socket", MountPath: "/etc/kubernetes/konnectivity-socket"},
@@ -301,7 +298,7 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								SuccessThreshold:    1,
 								ProbeHandler: corev1.ProbeHandler{
 									HTTPGet: &corev1.HTTPGetAction{
-										Port:   intstr.FromInt(8134),
+										Port:   intstr.FromInt(8092),
 										Path:   "/healthz",
 										Scheme: corev1.URISchemeHTTP,
 									},

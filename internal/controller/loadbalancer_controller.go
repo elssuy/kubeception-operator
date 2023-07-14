@@ -91,9 +91,7 @@ func (r *LoadbalancerReconciler) Reconcile(ctx context.Context, req ctrl.Request
 			Type: corev1.ServiceTypeLoadBalancer,
 			Ports: []corev1.ServicePort{
 				{Name: "https", Port: lb.Spec.Port, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(6443)},
-				{Name: "konnectivity", Port: 8132, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8132)},
-				{Name: "konnectivity-admin", Port: 8133, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8133)},
-				{Name: "konnectivity-health", Port: 8134, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8134)},
+				{Name: "konnectivity", Port: 8091, Protocol: corev1.ProtocolTCP, TargetPort: intstr.FromInt(8091)},
 			},
 			Selector: labels,
 		}

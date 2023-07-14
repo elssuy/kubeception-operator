@@ -43,9 +43,7 @@ spec:
                   "--logtostderr=true",
                   "--ca-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
                   "--proxy-server-host=$CONTROL_PLANE_IP",
-                  "--proxy-server-port=8132",
-                  "--admin-server-port=8133",
-                  "--health-server-port=8134",
+                  "--proxy-server-port=8091",
                   "--agent-identifiers=host=\${NODE_NAME}&ipv4=\${HOST_IP}",
                   "--agent-id=\${NODE_NAME}",
                   "--service-account-token-path=/var/run/secrets/tokens/konnectivity-agent-token"
