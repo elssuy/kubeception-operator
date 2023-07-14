@@ -239,6 +239,11 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: &kas.Spec.Deployment.Replicas,
+			Strategy: appsv1.DeploymentStrategy{
+				RollingUpdate: &appsv1.RollingUpdateDeployment{
+					MaxUnavailable: &intstr.IntOrString{IntVal: 1},
+				},
+			},
 			Selector: &metav1.LabelSelector{
 				MatchLabels: labels("kube-apiserver", kas.Name, kas.Spec.Deployment.Labels),
 			},
