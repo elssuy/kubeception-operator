@@ -33,7 +33,7 @@ import (
 
 	// yaml "k8s.io/apimachinery/pkg/util/yaml"
 	// kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
-	clusterv1alpha1 "kubeception.ulfo.fr/api/v1alpha1"
+	clusterv1alpha1 "github.com/elssuy/kubeception/api/v1alpha1"
 )
 
 const (
