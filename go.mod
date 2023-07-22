@@ -1,4 +1,4 @@
-module kubeception.ulfo.fr
+module github.com/elssuy/kubeception
 
 go 1.19
 

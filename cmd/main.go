@@ -32,8 +32,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	clusterv1alpha1 "kubeception.ulfo.fr/api/v1alpha1"
-	"kubeception.ulfo.fr/internal/controller"
+	clusterv1alpha1 "github.com/elssuy/kubeception/api/v1alpha1"
+	"github.com/elssuy/kubeception/internal/controller"
 
 	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	//+kubebuilder:scaffold:imports

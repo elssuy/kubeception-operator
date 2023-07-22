@@ -37,7 +37,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
-	clusterv1alpha1 "kubeception.ulfo.fr/api/v1alpha1"
+	clusterv1alpha1 "github.com/elssuy/kubeception/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
 )
 
