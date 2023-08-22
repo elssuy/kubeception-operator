@@ -16,8 +16,26 @@ You'll need Certmanager installed as well. You can install it with the `./hack/i
 
 You can follow the Getting started (local) to run the operator on a local cluster. But you will face difficulties registering workers on managed Control Planes.
 
+## Helm installation
 
-## Getting started (already existing cluster)
+This operator can be installed using Kubeception-operator [Helm Chart](https://github.com/elssuy/helm-charts).
+In this chart `cert-manager` is installed as dependency. This can be disabled using `--set cert-manager.enabled=false` in your helm install command or via values file.
+
+```sh
+helm repo add elssuy https://elssuy.github.io/helm-charts
+helm repo update
+
+# Then list charts
+helm search repo elssuy --devel
+
+# Insall chart with default configuration
+helm install kcop elssuy/kubeception-operator --version [version]
+
+# Install without cert-manager
+helm install kcop elssuy/kubeception-operator --set cert-manager.enabled=false --version [version]
+```
+
+## Getting started developers (already existing cluster)
 
 **We asume you have a publicly available cluster and is able to provisione **Loadbalancer** service type.**
 
@@ -137,7 +155,7 @@ It needs Controle Plane IP to run.
 ./hack/deploy-plugins.sh xxx.xxx.xxx.xxx
 ```
 
-## Getting started (Local)
+## Getting started developers (Local)
 
 Here is the guide for local development. The operator is supposed to run on a cluster that provision **Loadbalancer** service type.
 To be able to provision **Loadbalancer** service type, we will be installing MetalLB.
