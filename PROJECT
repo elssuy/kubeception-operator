@@ -6,7 +6,7 @@ domain: kubeception.ulfo.fr
 layout:
 - go.kubebuilder.io/v4
 projectName: kubeception-operator
-repo: kubeception.ulfo.fr
+repo: github.com/elssuy/kubeception-operator
 resources:
 - api:
     crdVersion: v1
@@ -15,7 +15,7 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: ControlPlane
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 - api:
     crdVersion: v1
@@ -24,7 +24,7 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: Pki
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 - api:
     crdVersion: v1
@@ -33,7 +33,7 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: KubeControllerManager
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 - api:
     crdVersion: v1
@@ -42,7 +42,7 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: KubeAPIServer
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 - api:
     crdVersion: v1
@@ -51,7 +51,7 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: KubeScheduler
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 - api:
     crdVersion: v1
@@ -60,6 +60,6 @@ resources:
   domain: kubeception.ulfo.fr
   group: cluster
   kind: Loadbalancer
-  path: kubeception.ulfo.fr/api/v1alpha1
+  path: github.com/elssuy/kubeception-operator/api/v1alpha1
   version: v1alpha1
 version: "3"
