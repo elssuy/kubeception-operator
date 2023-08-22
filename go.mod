@@ -1,4 +1,4 @@
-module github.com/elssuy/kubeception
+module github.com/elssuy/kubeception-operator
 
 go 1.19
 

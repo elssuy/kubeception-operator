@@ -36,7 +36,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	clusterv1alpha1 "github.com/elssuy/kubeception/api/v1alpha1"
+	clusterv1alpha1 "github.com/elssuy/kubeception-operator/api/v1alpha1"
 )
 
 // KubeAPIServerReconciler reconciles a KubeAPIServer object

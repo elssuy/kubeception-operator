@@ -35,7 +35,7 @@ import (
 
 	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	certmanagermetav1 "github.com/cert-manager/cert-manager/pkg/apis/meta/v1"
-	clusterv1alpha1 "github.com/elssuy/kubeception/api/v1alpha1"
+	clusterv1alpha1 "github.com/elssuy/kubeception-operator/api/v1alpha1"
 	"github.com/go-logr/logr"
 )
 
