@@ -18,6 +18,9 @@ fi
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
+kubectl -n metallb-system wait deploy/controller --for=condition=Available=True
+sleep 5
+
 kubectl apply -f - <<EOF
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
