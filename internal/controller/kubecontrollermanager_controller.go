@@ -209,7 +209,6 @@ func (r *KubeControllerManagerReconciler) Reconcile(ctx context.Context, req ctr
 								SuccessThreshold:    1,
 								ProbeHandler: corev1.ProbeHandler{
 									HTTPGet: &corev1.HTTPGetAction{
-										Host:   "127.0.0.1",
 										Port:   intstr.FromInt(10257),
 										Path:   "/healthz",
 										Scheme: corev1.URISchemeHTTPS,
