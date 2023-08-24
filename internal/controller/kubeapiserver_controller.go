@@ -275,10 +275,21 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--server-port=0",
 								"--agent-namespace=kube-system",
 								"--agent-service-account=konnectivity-agent",
+								"--server-id=$(POD_NAME)",
 								"--server-count",
 								strconv.FormatInt(int64(kas.Spec.Deployment.Replicas), 10),
 								"--kubeconfig=/etc/kubernetes/konnectivity/kubeconfig.yml",
 								"--authentication-audience=system:konnectivity-server",
+							},
+							Env: []corev1.EnvVar{
+								{
+									Name: "POD_NAME",
+									ValueFrom: &corev1.EnvVarSource{
+										FieldRef: &corev1.ObjectFieldSelector{
+											FieldPath: "metadata.name",
+										},
+									},
+								},
 							},
 							Ports: []corev1.ContainerPort{
 								{Name: "grpc", ContainerPort: 8091},
