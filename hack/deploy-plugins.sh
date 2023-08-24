@@ -44,8 +44,8 @@ spec:
                   "--ca-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
                   "--proxy-server-host=$CONTROL_PLANE_IP",
                   "--proxy-server-port=8091",
-                  "--agent-identifiers=host=\${NODE_NAME}&ipv4=\${HOST_IP}",
-                  "--agent-id=\${NODE_NAME}",
+                  "--agent-identifiers=host=\$(NODE_NAME)&ipv4=\$(HOST_IP)",
+                  "--agent-id=\$(NODE_NAME)",
                   "--service-account-token-path=/var/run/secrets/tokens/konnectivity-agent-token"
                   ]
           env:
