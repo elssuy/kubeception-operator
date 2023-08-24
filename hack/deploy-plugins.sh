@@ -64,7 +64,7 @@ spec:
               name: konnectivity-agent-token
           livenessProbe:
             httpGet:
-              port: 8134
+              port: 8093
               path: /healthz
             initialDelaySeconds: 15
             timeoutSeconds: 15
