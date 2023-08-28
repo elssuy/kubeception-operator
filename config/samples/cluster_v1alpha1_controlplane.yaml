@@ -37,6 +37,7 @@ spec:
         - kubernetes
         - kubernetes.default
         - kubernetes.default.svc
+        - kubernetes.default.svc.cluster.local
         - kubernetes.default.cluster.local
         - kube-apiserver
     kube-controller-manager:

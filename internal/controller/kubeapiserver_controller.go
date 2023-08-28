@@ -335,6 +335,8 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--etcd-servers",
 								kas.Spec.ETCDservers,
 								"--service-account-issuer",
+								"https://kubernetes.default.svc.cluster.local",
+								"--service-account-issuer",
 								"https://kube-apiserver",
 								"--service-account-key-file",
 								"/var/lib/kubernetes/tls/sa/tls.crt",
