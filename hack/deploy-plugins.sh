@@ -110,7 +110,8 @@ helm install cilium cilium/cilium \
   --set kubeProxyReplacement=strict \
   --set k8sServiceHost="$CONTROL_PLANE_IP" \
   --set k8sServicePort=6443 \
-  --set operator.replicas=1
+  --set operator.replicas=1 \
+  --set socketLB.hostNamespaceOnly=true
 
 
 echo "==== Deploy API-Server RBAC ===="
