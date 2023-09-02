@@ -8,6 +8,7 @@ usage() {
 CONTROLPLANE_IP=$1
 TOKEN=$2
 CA=$3
+KUBELETVERSION=1.27.5
 
 if [[ -z ${CONTROLPLANE_IP} ]]; then
   echo "Control plane ip is not set"
@@ -77,7 +78,7 @@ cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 sudo apt-get update
-sudo apt-get install -y kubelet
+sudo apt-get install -y kubelet=${KUBELETVERSION}-00
 sudo apt-mark hold kubelet
 
 ###################
