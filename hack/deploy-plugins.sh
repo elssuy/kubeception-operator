@@ -105,9 +105,9 @@ EOF
 
 
 echo "==== Deploy CNI ===="
-helm install cilium cilium/cilium \
+helm install cilium cilium/cilium --version=1.14.1 \
   --namespace kube-system \
-  --set kubeProxyReplacement=strict \
+  --set kubeProxyReplacement=true \
   --set k8sServiceHost="$CONTROL_PLANE_IP" \
   --set k8sServicePort=6443 \
   --set operator.replicas=1 \
