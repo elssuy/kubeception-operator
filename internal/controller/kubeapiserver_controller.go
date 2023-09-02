@@ -364,6 +364,7 @@ func (r *KubeAPIServerReconciler) GenerateDeployment(kas clusterv1alpha1.KubeAPI
 								"--requestheader-username-headers=X-Remote-User",
 								"--proxy-client-cert-file=/var/lib/kubernetes/tls/kube-apiserver/tls.crt",
 								"--proxy-client-key-file=/var/lib/kubernetes/tls/kube-apiserver/tls.key",
+								"--enable-aggregator-routing=true",
 							},
 							Ports: []corev1.ContainerPort{
 								{Name: "https", ContainerPort: 6443},
