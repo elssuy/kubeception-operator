@@ -94,7 +94,7 @@ mkdir -p /var/lib/kubelet/pki
 mkdir -p /var/lib/kubelet/manifests
 mkdir -p /etc/kubernetes
 
-cat<<EOF >> /var/lib/kubelet/kubelet-config.yaml
+cat <<EOF > /var/lib/kubelet/kubelet-config.yaml
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 containerRuntimeEndpoint: /run/crio/crio.sock
@@ -119,7 +119,7 @@ rotateCertificates: true
 serverTLSBootstrap: false
 EOF
 
-cat <<EOF >> /var/lib/kubelet/bootstrap-kubeconfig
+cat <<EOF > /var/lib/kubelet/bootstrap-kubeconfig
 apiVersion: v1
 clusters:
 - cluster:
@@ -141,7 +141,7 @@ users:
 EOF
 
 
-cat<<EOF >> /etc/systemd/system/kubelet.service
+cat <<EOF > /etc/systemd/system/kubelet.service
 [Unit]
 Description=Kubelet Service
 Requires=cri-o.service
