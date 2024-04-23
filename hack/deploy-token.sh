@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 ID="$(</dev/urandom tr -dc a-z0-9 | head -c "${1:-6}";echo;)"
 SECRET="$(< /dev/urandom tr -dc a-z0-9 | head -c "${1:-16}";echo;)"
 TOKEN="$ID.$SECRET"
