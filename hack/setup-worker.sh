@@ -13,6 +13,7 @@ TOKEN=$2
 CA=$3
 KUBELETVERSION=1.27.5
 KUBERNETES_VERSION=v1.27
+PROJECT_PATH=stable:/v1.29
 
 if [[ -z ${CONTROLPLANE_IP} ]]; then
   echo "Control plane ip is not set"
@@ -62,14 +63,13 @@ sudo apt install apt-transport-https ca-certificates curl gnupg2 software-proper
 export OS=xUbuntu_22.04
 export CRIO_VERSION=1.24
 
-echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /"| sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$CRIO_VERSION/$OS/ /"|sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION.list
-
-curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION/$OS/Release.key | sudo apt-key add -
-curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | sudo apt-key add -
+curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/${PROJECT_PATH}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+cat <<EOF | sudo tee /etc/apt/sources.list.d/cri-o.list
+deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/${PROJECT_PATH}/deb/ /
+EOF
 
 sudo apt update
-sudo apt install cri-o cri-o-runc -y
+sudo apt install cri-o -y
 
 sudo systemctl start crio
 sudo systemctl enable crio
