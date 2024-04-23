@@ -12,6 +12,7 @@ CONTROLPLANE_IP=$1
 TOKEN=$2
 CA=$3
 KUBELETVERSION=1.27.5
+KUBERNETES_VERSION=v1.27
 
 if [[ -z ${CONTROLPLANE_IP} ]]; then
   echo "Control plane ip is not set"
@@ -76,12 +77,12 @@ sudo systemctl enable crio
 # Install Kubelet
 
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+curl -fsSL https://pkgs.k8s.io/core:/stable:/${KUBERNETES_VERSION}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/${KUBERNETES_VERSION}/deb/ /
 EOF
 sudo apt-get update
-sudo apt-get install -y kubelet=${KUBELETVERSION}-00
+sudo apt-get install -y kubelet
 sudo apt-mark hold kubelet
 
 ###################
