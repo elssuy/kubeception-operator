@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 usage() {
   echo "USAGE: ${0} [Control plane IP] [TOKEN] [CA String]"
   exit 1
